@@ -76,7 +76,7 @@ with st.expander("So funktioniert es", expanded=True):
 | **Welt** | Jeder Standort hat ein Niveau (X und Y hängen dort mit ρ_b zusammen) und eine **Welle**, die X und Y gemeinsam bewegt (Kopplung γ, Gedächtnis in Tagen), plus tägliches **Rauschen** σ. |
 | **Mittelung** | Statt einzelner Tage werden Mittel über Fenster von 7, 30 oder 90 Tagen korreliert. Das Rauschen mittelt sich weg, die Welle bleibt: r steigt, **wenn die Welle Gedächtnis hat**. |
 | **Auswahl** | Nur die obersten q % der Standorte nach X oder nach der Summe aus X und Y werden betrachtet (Bereichseinschränkung). Das schwächt r nach einer festen Formel; nach der Summe kann das Vorzeichen kippen. |
-| **Messrauschen** | Rauschen verdünnt r um die Wurzel aus den Zuverlässigkeiten; die Korrektur ist unverzerrt, braucht aber die Zuverlässigkeit und streut stärker. |
+| **Messrauschen** | Rauschen verdünnt r um die Wurzel aus den Zuverlässigkeiten; die Korrektur ist näherungsweise unverzerrt, braucht aber die Zuverlässigkeit und streut stärker. |
 | **Ebene** | **Alle Standort-Tage**, **Standortmittel** (zwischen den Standorten) und **innerhalb** der Standorte (Abweichung vom Standortmittel) beantworten drei verschiedene Fragen. |
 | **Erwartet (exakt)** | Zu jeder Zeile steht der Wert, den die Formel für diese Welt erwartet; der gemessene Wert schwankt um ihn. |
         """
@@ -123,7 +123,7 @@ cols[0].metric(f"Mittel über {settings.window} Tage" if "window" in by_key else
 cols[1].metric("Gewählte Standorte" if "selected" in by_key else "Auswahl", de(by_key["selected"].r) if "selected" in by_key else "–", help="Nur bei einer Auswahl.")
 cols[2].metric("Ohne Messrauschen", de(by_key["true"].r), help=f"r der wahren Werte; erwartet {de(by_key['true'].exact)}.")
 st.plotly_chart(build_rows_bar(a.rows), width="stretch", key="main_bars")
-st.caption("Alle Zuschnitte derselben Welt: gemessen (Balken) und erwartet (Rauten). Die Balken weichen von den Rauten nur durch den Zufall dieser einen Welt ab.")
+st.caption("Alle Zuschnitte derselben Welt: gemessen (Balken) und erwartet (Rauten). Die Balken weichen von den Rauten durch den Zufall dieser einen Welt und, bei wenigen Standorten, durch die Näherung (Verhältnis der Erwartungswerte) ab.")
 names = {r.key: r.name for r in a.rows if r.key in a.data}
 view = st.selectbox("Zuschnitt für das Streudiagramm", list(names), format_func=names.get, key="view_select")
 vx, vy = a.data[view]
@@ -213,7 +213,7 @@ st.markdown(
     r"""
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
-| **Die Welt ist additiv und normalverteilt** | die exakten Formeln gelten für diese Welt (Normalverteilung, gleiche Streuung bei der Summenformel); echte Kennzahlen weichen ab, die Richtung der Effekte bleibt | – |
+| **Die Welt ist additiv und normalverteilt** | die exakten Formeln gelten für diese Welt (Normalverteilung, gleiche Streuung bei der Summenformel); echte Kennzahlen weichen ab; ob die Richtung der Effekte bleibt, zeigt die Demo nicht | – |
 | **Die Auswahl folgt einer Regel** | hier wird nach X oder nach der Summe gewählt; eine Auswahl, die selbst von Y abhängt (nach Y, nach dem Ergebnis), verzerrt anders | Linie *Kausale Diagramme und Adjustierung* |
 | **Ursachen** | die Demo zeigt keine Wirkung: Simpson, Störfaktoren und Collider als Diagramm gehören der Kausal-Linie; die Summenauswahl ist nur ihr Zahlenbeispiel | `konfundierung-demo`, `schlechte-kontrollen-demo` |
 | **Die Zuverlässigkeit ist bekannt** | die Korrektur des Messrauschens braucht sie; im Alltag ist sie geschätzt und unsicher | – |
