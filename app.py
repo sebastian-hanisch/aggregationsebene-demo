@@ -63,10 +63,23 @@ st.markdown(
 steht eine gemeinsame Welle, dazu kommt tägliches Rauschen. Dieselben Zahlen liefern ganz verschiedene Korrelationen, je nachdem, **was man mittelt, wen man auswählt und auf welcher Ebene man rechnet**.
 Die Fragen: **Warum steigt r, wenn man Tage zu Wochen mittelt? Was macht die Auswahl „der besten Standorte“ mit r? Was verdünnt Messrauschen? Und welche Ebene beantwortet welche Frage?**
 
-Weiter unten: vier Experimente (**🔬**), **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**. Ursachen, Störfaktoren und Collider als Diagramm stehen in der Linie
+Wer die Idee zuerst ohne Fachbegriffe verstehen will, öffnet **💬 In einfachen Worten**. Weiter unten: vier Experimente (**🔬**), **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**. Ursachen, Störfaktoren und Collider als Diagramm stehen in der Linie
 *Kausale Diagramme und Adjustierung* (`konfundierung-demo`, `schlechte-kontrollen-demo`); hier geht es nur um den **Zuschnitt**, mit exakten Formeln statt Diagrammen.
 """
 )
+
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/aggregationsebene-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Stellen Sie sich zwei Kennzahlen vor, etwa Sendungen und Personal, gemessen an vielen Standorten über viele Tage. Hinter beiden steht eine gemeinsame Schwankung, dazu kommt tägliches Rauschen. Die Demo zeigt: Dieselben Zahlen liefern ganz verschiedene **Korrelationen**, je nachdem, **was man mittelt, wen man auswählt und auf welcher Ebene man rechnet**.
+
+Tage zu Wochen zu mitteln hebt die Korrelation nur, wenn die gemeinsame Schwankung über mehrere Tage anhält. Wer nur die „besten“ Standorte betrachtet, sieht eine schwächere, bei Auswahl nach der Summe sogar eine umgekehrte. Zwischen den Standorten und innerhalb der Standorte kann dieselbe Welt verschiedene Vorzeichen haben. Zu jedem Wert steht daneben der Wert, den die Formel erwartet.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/aggregationsebene-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
 
 with st.expander("So funktioniert es", expanded=True):
     st.markdown(
@@ -227,20 +240,36 @@ st.caption("Alle Daten sind simuliert; die Welt ist eine Modellwahl, kein Befund
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/aggregationsebene-erklaert.json, nicht von Hand ändern)
     st.markdown(
         r"""
-**Lesehilfe.** An Standort $g$ und Tag $t$ gilt
+**Lesehilfe.** Gegeben sind $G$ Standorte mit je $T$ Tagen und zwei Kennzahlen $X$ und $Y$. Gesucht ist die Korrelation $r$ je nach Zuschnitt: alle Standort-Tage, Fenstermittel, Standortmittel, innerhalb der Standorte, nach einer Auswahl und bei Messrauschen.
+
+| Symbol | Bedeutung |
+|---|---|
+| $x_{gt}$, $y_{gt}$ | Kennzahlen $X$ und $Y$ an Standort $g$ und Tag $t$ |
+| $\mu^x_g$, $\mu^y_g$ | Niveau des Standorts $g$ in $X$ und $Y$ (Standardnormal) |
+| $\rho_b$ | Korrelation der Standortniveaus (zwischen den Standorten) |
+| $w_{gt}$ | gemeinsame Welle (Varianz 1); das Gedächtnis $s$ sind die Tage, über die sie anhält |
+| $\gamma$ | Kopplung der Welle an $Y$ (1: gleich wie in $X$, negativ: gegenläufig) |
+| $\sigma\,\varepsilon_{gt}$, $\sigma\,\eta_{gt}$ | tägliches Rauschen in $X$ und $Y$ (Standardnormal, Stärke $\sigma$) |
+| $m$ | Zahl der Tage im Fenster |
+| $V_m$ | Varianz des Fenstermittels der Welle |
+| $q$ | Anteil der gewählten Einheiten |
+| $\rho$ | wahre Korrelation vor der Auswahl bzw. vor dem Messrauschen |
+| $r_x$, $r_y$ | Zuverlässigkeiten von $X$ und $Y$ (Anteil der wahren Varianz) |
+
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/aggregationsebene-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
+    st.markdown(
+        r"""
+**Modell.** An Standort $g$ und Tag $t$ gilt
 
 $$ x_{gt} = \mu^x_g + w_{gt} + \sigma\,\varepsilon_{gt}, \qquad y_{gt} = \mu^y_g + \gamma\, w_{gt} + \sigma\,\eta_{gt} $$
 
 mit Standortniveaus $(\mu^x_g, \mu^y_g)$ (Standardnormal, Korrelation $\rho_b$), einer Welle $w$ (Varianz 1, Autokovarianz $\max(0, 1 - |h|/s)$ bei Gedächtnis $s$) und Standardnormalrauschen $\varepsilon, \eta$.
-
-| Symbol | Bedeutung |
-|---|---|
-| $m$ | Zahl der Tage im Fenster |
-| $V_m$ | Varianz des Fenstermittels der Welle |
-| $\gamma$ | Kopplung der Welle an $Y$ |
-| $q$ | Anteil der gewählten Einheiten |
 
 **Fenstermittel der Welle.**
 
@@ -268,7 +297,7 @@ $$ r_{\text{beob}} = \rho\sqrt{r_x r_y}, \qquad \hat\rho = \frac{r_{\text{beob}}
 
 $$ \sum_{g,t}(x_{gt}-\bar x)(y_{gt}-\bar y) = \sum_{g,t}(x_{gt}-\bar x_g)(y_{gt}-\bar y_g) + T\sum_g(\bar x_g-\bar x)(\bar y_g-\bar y) $$
 
-**Quellen.** In dieser Fassung sind keine Literaturangaben ausgewiesen; die Formeln sind durch unabhängige Rechenwege (Tests gegen scipy, Simulationen und Schleifenfassungen) und die Messungen der Experimente gestützt.
+**Quellen.** Der Name Thorndike (Bereichseinschränkung) wird hier ohne Literaturangabe genannt; die Formeln sind durch unabhängige Rechenwege (Tests gegen scipy, Simulationen und Schleifenfassungen) und die Messungen der Experimente gestützt.
         """
     )
 

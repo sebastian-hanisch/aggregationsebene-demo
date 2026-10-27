@@ -112,6 +112,27 @@ def test_claim_the_selection_by_the_sum_statements(grid):
     assert (last["mean"], last["neg"]) == pytest.approx((-0.084, 0.85), abs=0.0006)
 
 
+def test_claim_the_sum_selection_at_rho_08_in_400_runs_is_negative_in_about_three_quarters():
+    """README: in 400 Läufen (4 Seeds · 100) sind es 77 % negativ (das Raster mit 40 Läufen gibt 85,0 %, die Formel −0,069)."""
+    cell = ev.select_cell("summe", 0.8, 0.01, C.SUM_N, 100)
+    assert cell["runs"] == 400 and round(100 * cell["neg"]) == 77 and cell["exact"] == pytest.approx(-0.069, abs=0.0006)
+    assert "in 400 Läufen (4 · 100) waren etwa drei Viertel negativ, nämlich 77 %" in README and "ein Lauf mit 400 Läufen" not in README
+
+
+def test_claim_the_run_counts_per_cell_are_stated_in_the_readme(grid):
+    """Läufe je Zelle (Seeds · Läufe je Seed) stehen im Raster und im README."""
+    counts = {"window": 200, "select_x": 2000, "select_summe": 40, "attenuation": 2000, "level": 800}
+    assert {c["runs"] for c in grid["window"]} == {counts["window"]} and {c["runs"] for c in grid["attenuation"]} == {counts["attenuation"]} and {c["runs"] for c in grid["level"]} == {counts["level"]}
+    assert {c["runs"] for c in grid["select"] if c["by"] == "x"} == {counts["select_x"]} and {c["runs"] for c in grid["select"] if c["by"] == "summe"} == {counts["select_summe"]}
+    for text in ("je 4 · 50 = 200 Läufe", "je 4 · 500 = 2 000 Läufe), Auswahl nach der Summe", "je 4 · 10 = 40 Läufe", "je 4 · 500 = 2 000 Läufe mit 300 Einheiten", "je 4 · 200 = 800 Läufe",
+                 "je 200 Läufe à 3 600 Tage; Punkte", "je Zelle 2 000 Läufe; exakt nach Thorndike", "je Zelle 40 Läufe; exakt (V_S", "65,3 %; je 2 000 Läufe"):
+        assert text in README, text
+
+
+def test_claim_the_sources_sentence_names_the_two_authors_terms():
+    assert "Die Namen Thorndike (Bereichseinschränkung) und Fisher-z werden hier ohne Literaturangabe genannt" in README and "keine Literaturangaben" not in README
+
+
 def test_claim_the_attenuation_statements(grid):
     """README: wahres ρ = 0,6; bei Zuverlässigkeit 0,4 / 0,4 bleibt r 0,237 (exakt 0,240); Korrektur 0,593 mit Streuung 0,137 gegen 0,037 ohne Messfehler."""
     low = ev.find(grid["attenuation"], rx=0.4, ry=0.4)

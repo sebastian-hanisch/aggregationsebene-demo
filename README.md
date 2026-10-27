@@ -29,7 +29,7 @@ Standort g, Tag t: x_gt = μx_g + w_gt + σ ε_gt, y_gt = μy_g + γ w_gt + σ �
 - **Zuschnitte der Hauptansicht** (`agr_evaluation.py`): alle Standort-Tage, dieselben Werte ohne Rauschen, die Korrektur für das Messrauschen (r geteilt durch die Wurzel aus den Zuverlässigkeiten), innerhalb der Standorte (Abweichung vom Standortmittel), Mittel über m Tage dieser Abweichungen, Standortmittel (zwischen den Standorten) und die Auswahl der obersten q % der Standorte nach dem Standortmittel von X oder nach der Summe der standardisierten Werte. Zu jeder Zeile steht der **erwartete** Wert aus der Formel.
 - **Exakte Formeln** (Erwartung als Verhältnis der Erwartungswerte): r über alle Standort-Fenster = (ρ_b + γ V_m)/√((1 + V_m + σ²/m)(1 + γ² V_m + σ²/m)) mit der Varianz V_m des Fenstermittels der Welle (für m = 1 alle Standort-Tage, für m = T die Standortmittel); innerhalb mit der Korrektur für das abgezogene Standortmittel; Auswahl nach X nach Thorndike (ρ√u/√(1 − ρ² + ρ² u), u das Varianzverhältnis der gestutzten Normalverteilung); Auswahl nach der Summe (V_S − V_D)/(V_S + V_D); Verdünnung ρ√(rx ry). Die Zerlegung Σ(x − x̄)(y − ȳ) = Σ innerhalb + T · Σ zwischen ist eine Identität.
 - **Experimente:** (1) Mittelung und Gedächtnis der Welle (eine Welle ohne Niveau), (2) Auswahl nach X und nach der Summe (normalverteilte Paare), (3) Messrauschen und Korrektur, (4) eine Welt, drei Ebenen.
-- **Vorgerechnetes Raster** (`tools/make_grid.py`, `data/aggregation_grid.json`, 2 Sekunden auf 10 Prozessen bei der Erzeugung, rechnerabhängig): Mittelung (24 Zellen: Gedächtnis 1, 7, 30 · Rauschen 1, 2 · Fenster 1, 7, 30, 90, je 4 · 50 Läufe à 3 600 Tage), Auswahl nach X (12 Zellen: ρ = 0,3, 0,5, 0,8 · oberste 100, 50, 20, 5 % von 400 Einheiten, je 4 · 500 Läufe), Auswahl nach der Summe (12 Zellen: ρ · oberste 50, 20, 10, 1 % von 20 000 Paaren, je 4 · 10 Läufe), Messrauschen (5 Zeilen, je 4 · 500 Läufe mit 300 Einheiten), Ebenen (4 Welten, je 4 · 200 Läufe). Vier Seeds je Zelle (101 bis 104). **Live:** eine Welt mit bis zu 60 Standorten und 720 Tagen mit allen Zuschnitten.
+- **Vorgerechnetes Raster** (`tools/make_grid.py`, `data/aggregation_grid.json`, 2 Sekunden auf 10 Prozessen bei der Erzeugung, rechnerabhängig): Mittelung (24 Zellen: Gedächtnis 1, 7, 30 · Rauschen 1, 2 · Fenster 1, 7, 30, 90, je 4 · 50 = 200 Läufe à 3 600 Tage), Auswahl nach X (12 Zellen: ρ = 0,3, 0,5, 0,8 · oberste 100, 50, 20, 5 % von 400 Einheiten, je 4 · 500 = 2 000 Läufe), Auswahl nach der Summe (12 Zellen: ρ · oberste 50, 20, 10, 1 % von 20 000 Paaren, je 4 · 10 = 40 Läufe), Messrauschen (5 Zeilen, je 4 · 500 = 2 000 Läufe mit 300 Einheiten), Ebenen (4 Welten, je 4 · 200 = 800 Läufe). Vier Seeds je Zelle (101 bis 104). **Live:** eine Welt mit bis zu 60 Standorten und 720 Tagen mit allen Zuschnitten.
 
 ## Befunde (gemessen, keine Behauptungen)
 
@@ -46,14 +46,14 @@ Alle Zahlen stehen in `tests/test_claims.py` (Raster-Werte gegen die JSON-Datei,
 | 30 | 1 | 0,500 (0,500) | 0,864 (0,866) | 0,952 (0,952) | 0,964 (0,964) |
 | 30 | 2 | 0,201 (0,200) | 0,616 (0,618) | 0,826 (0,833) | 0,866 (0,870) |
 
-**Streuung von r und Anteil „signifikanter“ Läufe** (σ = 2; Punkte je Fenster 3 600 / 514 / 120 / 40):
+**Streuung von r und Anteil „signifikanter“ Läufe** (σ = 2; je 200 Läufe à 3 600 Tage; Punkte je Fenster 3 600 / 514 / 120 / 40):
 
 | Gedächtnis | 1 Tag | 7 Tage | 30 Tage | 90 Tage |
 |---|---|---|---|---|
 | 1 | 0,016 / 100,0 % | 0,039 / 99,5 % | 0,089 / 62,0 % | 0,157 / 24,5 % |
 | 30 | 0,023 / 100,0 % | 0,035 / 100,0 % | 0,031 / 100,0 % | 0,041 / 100,0 % |
 
-**Auswahl nach X** (Experiment 2; wahres ρ; r der obersten 100, 50, 20, 5 % von 400 Einheiten, also 400, 200, 80, 20 Einheiten; exakt nach Thorndike):
+**Auswahl nach X** (Experiment 2; wahres ρ; r der obersten 100, 50, 20, 5 % von 400 Einheiten, also 400, 200, 80, 20 Einheiten; je Zelle 2 000 Läufe; exakt nach Thorndike):
 
 | ρ | 100 % | 50 % | 20 % | 5 % |
 |---|---|---|---|---|
@@ -61,7 +61,7 @@ Alle Zahlen stehen in `tests/test_claims.py` (Raster-Werte gegen die JSON-Datei,
 | 0,5 | 0,500 (0,500) | 0,331 (0,329) | 0,259 (0,261) | 0,201 (0,210) |
 | 0,8 | 0,799 (0,800) | 0,626 (0,626) | 0,527 (0,529) | 0,443 (0,444) |
 
-**Auswahl nach der Summe X + Y** (Experiment 2; r der obersten 50, 20, 10, 1 % von 20 000 Paaren; exakt (V_S − V_D)/(V_S + V_D)):
+**Auswahl nach der Summe X + Y** (Experiment 2; r der obersten 50, 20, 10, 1 % von 20 000 Paaren; je Zelle 40 Läufe; exakt (V_S − V_D)/(V_S + V_D)):
 
 | ρ | 50 % | 20 % | 10 % | 1 % |
 |---|---|---|---|---|
@@ -92,8 +92,8 @@ Alle Zahlen stehen in `tests/test_claims.py` (Raster-Werte gegen die JSON-Datei,
 |---|---|
 | Hebt die Mittelung r? (Experiment 1) | **Nur, wenn die Welle Gedächtnis hat:** bei 30 Tagen Gedächtnis und σ = 2 steigt r von **0,201** (Tage) auf **0,616** (Wochen), **0,826** (Monate) und **0,866** (Quartale), erwartet 0,200 / 0,618 / 0,833 / 0,870. Ohne Gedächtnis bleibt r bei jedem Fenster bei **0,2** (1/(1 + σ²)). |
 | Was kostet die Mittelung? (Experiment 1) | **Punkte:** aus 3 600 Tagen werden 514, 120 und 40 Fenster; bei weißer Welle und σ = 2 steigt die Streuung von r von 0,016 auf 0,157, und der Anteil „signifikanter“ Läufe fällt von 100,0 % auf 24,5 % (200 Läufe; die Rechnung nach Fisher-z gibt 23 %). |
-| Was macht die Auswahl der besten Standorte? (Experiment 2) | **Sie schwächt r nach einer Formel:** bei ρ = 0,5 und 400 Einheiten 0,500 → 0,331 → 0,259 → 0,201 für die obersten 100 / 50 / 20 / 5 % (exakt 0,500 / 0,329 / 0,261 / 0,210). Bei nur **20** gewählten Einheiten streut r mit **0,224**, ist in **18,8 %** der Läufe negativ und nur in **14,1 %** signifikant positiv (bei 80: 65,3 %). |
-| Was macht die Auswahl nach der Summe? (Experiment 2) | **Sie erzeugt eine negative Korrelation aus einer positiven:** bei ρ = 0,5 +0,046 für die oberen 50 %, **−0,210**, **−0,326** und **−0,545** für 20 / 10 / 1 %; bei ρ = 0,3 schon bei den oberen 50 % −0,196; bei ρ = 0,8 erst bei den obersten 1 % (−0,084 und 85,0 % der Läufe negativ im Raster aus nur 40 Läufen; die Formel gibt −0,069, ein Lauf mit 400 Läufen etwa drei Viertel negativ). |
+| Was macht die Auswahl der besten Standorte? (Experiment 2) | **Sie schwächt r nach einer Formel:** bei ρ = 0,5 und 400 Einheiten 0,500 → 0,331 → 0,259 → 0,201 für die obersten 100 / 50 / 20 / 5 % (exakt 0,500 / 0,329 / 0,261 / 0,210). Bei nur **20** gewählten Einheiten streut r mit **0,224**, ist in **18,8 %** der Läufe negativ und nur in **14,1 %** signifikant positiv (bei 80: 65,3 %; je 2 000 Läufe). |
+| Was macht die Auswahl nach der Summe? (Experiment 2) | **Sie erzeugt eine negative Korrelation aus einer positiven:** bei ρ = 0,5 +0,046 für die oberen 50 %, **−0,210**, **−0,326** und **−0,545** für 20 / 10 / 1 %; bei ρ = 0,3 schon bei den oberen 50 % −0,196; bei ρ = 0,8 erst bei den obersten 1 % (−0,084 und 85,0 % der Läufe negativ im Raster aus nur 40 Läufen; die Formel gibt −0,069; in 400 Läufen (4 · 100) waren etwa drei Viertel negativ, nämlich 77 %: die 85,0 % streuen mit der kleinen Zahl der Läufe). |
 | Was verdünnt Messrauschen? (Experiment 3) | r = ρ√(rx ry): bei Zuverlässigkeit 0,4 und 0,4 bleibt von ρ = 0,6 nur **0,237** (exakt 0,240). Die Korrektur trifft im Mittel **0,593**, ihre Streuung ist aber **0,137** statt 0,037 ohne Messfehler: sie braucht die Zuverlässigkeit und wird unsicherer. |
 | Welche Ebene beantwortet was? (Experiment 4) | **Keine allein:** bei ρ_b = 0,8 und Kopplung −0,5 liefert eine Welt **+0,101** (alle Standort-Tage), **+0,777** (Standortmittel, Streuung 0,077) und **−0,316** (innerhalb), in **100,0 %** der Läufe mit verschiedenem Vorzeichen. Bei nur 10 Standorten streut die Korrelation der Standortmittel mit **0,147**. Ohne Zusammenhang zwischen den Standorten (ρ_b = 0) bleiben Standortmittel 0,009, innerhalb 0,499. |
 | Standardwelt der App | 30 Standorte, 360 Tage, ρ_b = 0,5, Rauschen 2, Gedächtnis 30, Kopplung 1: erwartet **0,25** über alle Standort-Tage, **0,53** für die Standortmittel, **0,19** innerhalb, **0,75** ohne Messrauschen; Mittel über 30 Tage innerhalb **0,83**. |
@@ -108,7 +108,7 @@ Alle Zahlen stehen in `tests/test_claims.py` (Raster-Werte gegen die JSON-Datei,
 - **Alle Standorte sind gleich verteilt.** Mehrebenenmodelle mit Zufallseffekten und die Intraklassenkorrelation sind nicht gebaut.
 - **Das einzige Gedächtnis ist die Welle.** Trends und Saisonmuster (Stück 4) und räumliche Aggregation (Gebietszuschnitt) fehlen.
 - **Erwartet heißt Verhältnis der Erwartungswerte.** Bei wenigen Standorten weicht der Mittelwert der gemessenen r davon merklich ab (10 Standorte: erwartet 0,115 für alle Standort-Tage, gemessen 0,071).
-- **Quellen:** keine Literaturangaben; die Formeln sind durch unabhängige Rechenwege (unten) und die Messungen gestützt.
+- **Quellen:** Die Namen Thorndike (Bereichseinschränkung) und Fisher-z werden hier ohne Literaturangabe genannt; die Formeln sind durch unabhängige Rechenwege (unten) und die Messungen gestützt.
 
 ## Verifikation
 
