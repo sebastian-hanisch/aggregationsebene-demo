@@ -88,7 +88,7 @@ with st.expander("So funktioniert es", expanded=True):
 |---|---|
 | **Welt** | Jeder Standort hat ein Niveau (X und Y hängen dort mit ρ_b zusammen) und eine **Welle**, die X und Y gemeinsam bewegt (Kopplung γ, Gedächtnis in Tagen), plus tägliches **Rauschen** σ. |
 | **Mittelung** | Statt einzelner Tage werden Mittel über Fenster von 7, 30 oder 90 Tagen korreliert. Das Rauschen mittelt sich weg, die Welle bleibt: r steigt, **wenn die Welle Gedächtnis hat**. |
-| **Auswahl** | Nur die obersten q % der Standorte nach X oder nach der Summe aus X und Y werden betrachtet (Bereichseinschränkung). Das schwächt r nach einer festen Formel; nach der Summe kann das Vorzeichen kippen. |
+| **Auswahl** | Nur die obersten q % der Standorte nach X oder nach der Summe aus X und Y werden betrachtet (Range Restriction, Einschränkung des Wertebereichs). Das schwächt r nach einer festen Formel; nach der Summe kann das Vorzeichen kippen. |
 | **Messrauschen** | Rauschen verdünnt r um die Wurzel aus den Zuverlässigkeiten; die Korrektur ist näherungsweise unverzerrt, braucht aber die Zuverlässigkeit und streut stärker. |
 | **Ebene** | **Alle Standort-Tage**, **Standortmittel** (zwischen den Standorten) und **innerhalb** der Standorte (Abweichung vom Standortmittel) beantworten drei verschiedene Fragen. |
 | **Erwartet (exakt)** | Zu jeder Zeile steht der Wert, den die Formel für diese Welt erwartet; der gemessene Wert schwankt um ihn. |
@@ -297,7 +297,7 @@ $$ r_{\text{beob}} = \rho\sqrt{r_x r_y}, \qquad \hat\rho = \frac{r_{\text{beob}}
 
 $$ \sum_{g,t}(x_{gt}-\bar x)(y_{gt}-\bar y) = \sum_{g,t}(x_{gt}-\bar x_g)(y_{gt}-\bar y_g) + T\sum_g(\bar x_g-\bar x)(\bar y_g-\bar y) $$
 
-**Quellen.** Der Name Thorndike (Bereichseinschränkung) wird hier ohne Literaturangabe genannt; die Formeln sind durch unabhängige Rechenwege (Tests gegen scipy, Simulationen und Schleifenfassungen) und die Messungen der Experimente gestützt.
+**Quellen.** Der Name Thorndike (Range Restriction, Einschränkung des Wertebereichs) wird hier ohne Literaturangabe genannt; die Formeln sind durch unabhängige Rechenwege (Tests gegen scipy, Simulationen und Schleifenfassungen) und die Messungen der Experimente gestützt.
         """
     )
 

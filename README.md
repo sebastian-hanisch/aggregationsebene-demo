@@ -108,7 +108,7 @@ Alle Zahlen stehen in `tests/test_claims.py` (Raster-Werte gegen die JSON-Datei,
 - **Alle Standorte sind gleich verteilt.** Mehrebenenmodelle mit Zufallseffekten und die Intraklassenkorrelation sind nicht gebaut.
 - **Das einzige Gedächtnis ist die Welle.** Trends und Saisonmuster (Stück 4) und räumliche Aggregation (Gebietszuschnitt) fehlen.
 - **Erwartet heißt Verhältnis der Erwartungswerte.** Bei wenigen Standorten weicht der Mittelwert der gemessenen r davon merklich ab (10 Standorte: erwartet 0,115 für alle Standort-Tage, gemessen 0,071).
-- **Quellen:** Die Namen Thorndike (Bereichseinschränkung) und Fisher-z werden hier ohne Literaturangabe genannt; die Formeln sind durch unabhängige Rechenwege (unten) und die Messungen gestützt.
+- **Quellen:** Die Namen Thorndike (Range Restriction, Einschränkung des Wertebereichs) und Fisher-z werden hier ohne Literaturangabe genannt; die Formeln sind durch unabhängige Rechenwege (unten) und die Messungen gestützt.
 
 ## Verifikation
 

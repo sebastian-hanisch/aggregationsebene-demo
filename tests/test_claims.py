@@ -130,7 +130,7 @@ def test_claim_the_run_counts_per_cell_are_stated_in_the_readme(grid):
 
 
 def test_claim_the_sources_sentence_names_the_two_authors_terms():
-    assert "Die Namen Thorndike (Bereichseinschränkung) und Fisher-z werden hier ohne Literaturangabe genannt" in README and "keine Literaturangaben" not in README
+    assert "Die Namen Thorndike (Range Restriction, Einschränkung des Wertebereichs) und Fisher-z werden hier ohne Literaturangabe genannt" in README and "keine Literaturangaben" not in README
 
 
 def test_claim_the_attenuation_statements(grid):
